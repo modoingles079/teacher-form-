@@ -304,16 +304,13 @@
 </div>
 
 <script>
-  // ↓ Replace YOUR_FORM_ID with your Formspree ID (e.g. xpwzabcd)
-  const FORMSPREE = 'https://formspree.io/f/xpqybjvg';
-
-  async function handleSubmit() {
+  function handleSubmit() {
     const name        = document.getElementById('name').value.trim();
     const nationality = document.getElementById('nationality').value.trim();
     const city        = document.getElementById('city').value;
     const whatsapp    = document.getElementById('whatsapp').value.trim();
-    const experience  = document.getElementById('experience').value;
     const email       = document.getElementById('email').value.trim();
+    const experience  = document.getElementById('experience').value;
     const modality    = document.querySelector('input[name="modality"]:checked')?.value || '';
     const slots       = [...document.querySelectorAll('input[type="checkbox"]:checked')].map(c => c.value);
 
@@ -326,39 +323,23 @@
       return;
     }
 
-    const btn = document.getElementById('submitBtn');
-    btn.classList.add('loading');
-    btn.disabled = true;
+    const msg = 
+`New Teacher Application
 
-    try {
-      const res = await fetch(FORMSPREE, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-        body: JSON.stringify({
-          'Project':     'Teacher Recruitment',
-          'Full Name':   name,
-          'Nationality': nationality,
-          'City':        city,
-          'WhatsApp':    whatsapp,
-          'Email':       email,
-          'Experience':  experience,
-          'Time Slots':  slots.join(', '),
-          'Modality':    modality,
-        }),
-      });
+Name: ${name}
+Nationality: ${nationality}
+City: ${city}
+WhatsApp: ${whatsapp}
+Email: ${email}
+Experience: ${experience}
+Available slots: ${slots.join(', ')}
+Modality: ${modality}`;
 
-      if (res.ok) {
-        document.getElementById('formWrap').classList.add('hidden');
-        document.getElementById('successScreen').classList.add('visible');
-      } else {
-        throw new Error();
-      }
-    } catch {
-      err.textContent = 'Something went wrong. Please try again.';
-      err.classList.add('visible');
-      btn.classList.remove('loading');
-      btn.disabled = false;
-    }
+    const encoded = encodeURIComponent(msg);
+    window.open(`https://wa.me/573132434056?text=${encoded}`, '_blank');
+
+    document.getElementById('formWrap').classList.add('hidden');
+    document.getElementById('successScreen').classList.add('visible');
   }
 </script>
 </body>
